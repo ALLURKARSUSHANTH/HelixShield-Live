@@ -218,6 +218,7 @@ socket.on("secure_message_result", (payload) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${candidate.name}</td>
+      <td>${candidate.optimization_method}</td>
       <td>${candidate.score}</td>
       <td>${candidate.gc_ratio}</td>
       <td>${candidate.max_homopolymer}</td>

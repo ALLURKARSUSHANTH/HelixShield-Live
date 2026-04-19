@@ -16,12 +16,23 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 room_members = defaultdict(set)
 
 
+def _candidate_optimization_method(candidate_name: str) -> str:
+    if candidate_name.startswith("DNA-Perm-"):
+        mapping_signature = candidate_name.split("-")[-1]
+        return f"DNA Permutation Mapping {mapping_signature} (COMET Eq.16-23)"
+    if candidate_name.startswith("HC-"):
+        mapping_signature = candidate_name.split("-")[-1]
+        return f"Hill-Climbing Neighbor Mapping {mapping_signature}"
+    return candidate_name
+
+
 def _candidate_rows(optimization_result, top_n: int = 24):
     rows = []
     for candidate in optimization_result.all_results[:top_n]:
         rows.append(
             {
                 "name": candidate.candidate_name,
+                "optimization_method": _candidate_optimization_method(candidate.candidate_name),
                 "score": round(candidate.score, 4),
                 "gc_ratio": round(candidate.gc_ratio, 4),
                 "max_homopolymer": candidate.max_homopolymer_run,
